@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spiele-Werkstatt 🎮 – Programmiere dein eigenes Spiel</title>
+  <meta name="description" content="Die Spiele-Werkstatt der Semper Oberschule: Entwickle in der 5. und 6. Klasse dein eigenes kleines Spiel – direkt im Browser, ohne Installation. Code ändern, Start klicken, spielen!">
+  <link rel="icon" type="image/png" href="assets/img/semper-logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .sgw-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) {
+      .sgw-layout { grid-template-columns: 1fr; }
+    }
+    .sgw-panel {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    .sgw-panel h3 { margin: 0; display: flex; align-items: center; gap: .5rem; }
+    #sgw-editor {
+      flex: 1;
+      min-height: 480px;
+      width: 100%;
+      resize: vertical;
+      font-family: "Cascadia Code", Consolas, "Courier New", monospace;
+      font-size: .85rem;
+      line-height: 1.5;
+      padding: .9rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0f172a;
+      color: #e2e8f0;
+      tab-size: 2;
+    }
+    #sgw-editor:focus { outline: 2px solid var(--primary); }
+    .sgw-vorschau {
+      flex: 1;
+      min-height: 480px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #0f172a;
+      width: 100%;
+    }
+    .sgw-aktionen { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+    .sgw-hinweis { font-size: .9rem; color: var(--muted); margin: 0; }
+    .sgw-status { font-size: .9rem; font-weight: 700; color: var(--primary-dark); min-height: 1.4em; }
+    .sgw-tasks { counter-reset: aufgabe; padding-left: 0; list-style: none; margin: 0; }
+    .sgw-tasks li {
+      counter-increment: aufgabe;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: .75rem;
+    }
+    .sgw-tasks li::before {
+      content: "Aufgabe " counter(aufgabe);
+      display: inline-block;
+      font-weight: 800;
+      color: var(--accent-dark);
+      margin-bottom: .25rem;
+    }
+    .sgw-tasks code {
+      background: var(--primary-tint);
+      color: var(--primary-dark);
+      padding: .1em .4em;
+      border-radius: 6px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: .9em;
+    }
+    .sgw-steps { padding-left: 1.2rem; }
+    .sgw-steps li { margin-bottom: .4rem; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container nav-bar">
+      <a class="brand" href="index.html">
+        <img class="brand__logo" src="assets/img/semper-logo.png" alt="Semper Logo" width="44" height="44">
+        <span>Semper Oberschule<small>Dresden</small></span>
+      </a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+      <nav aria-label="Hauptnavigation">
+        <ul class="nav-links" id="nav">
+          <li><a href="index.html" aria-current="page">Spiele-Werkstatt 🎮</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="kicker">Programmieren für Klasse 5 &amp; 6</span>
+        <h1>Spiele-Werkstatt 🎮</h1>
+        <p>Baue hier dein eigenes kleines Spiel – direkt im Browser, ohne Installation. Unten links steht der fertige Spiel-Code. Ändere etwas, klicke auf <strong>„Spiel starten“</strong> und schau, was passiert!</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="center">
+          <span class="kicker">So geht's</span>
+          <h2>In 4 Schritten zum eigenen Spiel</h2>
+        </div>
+        <div class="grid grid--3" style="margin-top:1.5rem">
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">1️⃣</div>
+            <h3>Code anschauen</h3>
+            <p>Im linken Kasten steht das Spiel „Fange den Stern!“. Alles, was du leicht ändern kannst, steht ganz oben zwischen den Strichen.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">2️⃣</div>
+            <h3>Etwas ändern</h3>
+            <p>Ändere zum Beispiel die Zahl bei <strong>geschwindigkeit</strong> von 3 auf 6 – oder probiere eine neue Farbe wie <strong>hotpink</strong>.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">3️⃣</div>
+            <h3>Spiel starten</h3>
+            <p>Klicke auf <strong>„▶ Spiel starten“</strong>. Rechts siehst du sofort dein verändertes Spiel. Klicke einmal ins Spiel, damit die Pfeiltasten ⬅️➡️ funktionieren.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">4️⃣</div>
+            <h3>Speichern</h3>
+            <p>Mit <strong>„💾 Speichern“</strong> bleibt dein Code auch erhalten, wenn du den Tab schließt. „↩ Original“ holt das Beispiel zurück.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="werkstatt">
+      <div class="container">
+        <div class="center">
+          <span class="kicker">Deine Werkstatt</span>
+          <h2>Code &amp; Spiel</h2>
+        </div>
+        <div class="sgw-layout" style="margin-top:2rem">
+          <div class="sgw-panel">
+            <h3>📝 Dein Code</h3>
+            <label for="sgw-editor" style="font-size:.9rem;color:var(--muted)">Du kannst den Text im Kasten direkt ändern:</label>
+            <textarea id="sgw-editor" spellcheck="false" aria-label="Spiel-Code zum Bearbeiten"></textarea>
+            <div class="sgw-aktionen">
+              <button type="button" class="btn btn--primary" id="sgw-start">▶ Spiel starten</button>
+              <button type="button" class="btn" id="sgw-speichern">💾 Speichern</button>
+              <button type="button" class="btn btn--light" id="sgw-reset">↩ Original</button>
+            </div>
+            <p class="sgw-status" id="sgw-status" role="status"></p>
+            <p class="sgw-hinweis">Dein Code wird nur in deinem Browser gespeichert – auf deinem eigenen Laptop bleibt er also erhalten.</p>
+          </div>
+          <div class="sgw-panel">
+            <h3>🕹️ Dein Spiel</h3>
+            <iframe class="sgw-vorschau" id="sgw-vorschau" title="Spiel-Vorschau" sandbox="allow-scripts"></iframe>
+            <p class="sgw-hinweis">Steuerung: Pfeiltasten ⬅️➡️ oder die Maus bzw. der Finger. Nach „Game over“ einfach ins Spiel klicken für eine neue Runde.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="center">
+          <span class="kicker">Werde Spiele-Entwickler*in</span>
+          <h2>Aufgaben zum Ausprobieren</h2>
+        </div>
+        <div style="max-width:760px;margin:2rem auto 0">
+          <ol class="sgw-tasks">
+            <li>Ändere <code>geschwindigkeit = 3</code> auf eine andere Zahl zwischen 1 und 10. Was passiert bei 10?</li>
+            <li>Gib deinem Fänger und dem Stern neue Farben: z.&nbsp;B. <code>"red"</code>, <code>"hotpink"</code>, <code>"gold"</code> oder Geheimfarben wie <code>"#7c3aed"</code>.</li>
+            <li>Mache den Fänger riesig: <code>fangBreite = 80</code> wird zu <code>fangBreite = 200</code>. Ist das Spiel jetzt leichter? Und fair?</li>
+            <li>Lass jeden Stern mehr Punkte geben: <code>punkteProStern = 1</code> wird zu <code>punkteProStern = 5</code>.</li>
+            <li>Profi-Aufgabe: Finde die Zeile <code>geschwindigkeit += 0.2</code> und ändere sie in <code>geschwindigkeit += 1</code>. Wie lange schaffst du es jetzt noch, den Stern zu fangen?</li>
+          </ol>
+          <p class="sgw-hinweis" style="margin-top:1rem">Tipp: Wenn mal etwas schiefgeht – kein Problem! Klicke auf „↩ Original“ und alles ist wieder da.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/img/semper-logo-weiss.png" alt="" width="96" height="44">
+          Semper Oberschule Dresden
+        </div>
+        <p>Eine private Oberschule in Dresden – mit MINT-Schwerpunkt, Kunst, Musik und Theater, getragen von Ideen und Tatendrang unserer Schülerinnen und Schüler.</p>
+        <p style="font-size:.85rem; color:#6f8f8d">Jordanstraße 7, 01099 Dresden · Äußere Neustadt</p>
+      </div>
+      <div>
+        <h4>Projekt</h4>
+        <ul>
+          <li><a href="index.html">Spiele-Werkstatt</a></li>
+          <li><a href="https://github.com/ottootti24/spiele-werkstatt">Quellcode auf GitHub</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li>Telefon: <a href="tel:+4935188942310">0351 88 94 23 10</a> · Fax: 0351 88 94 23 13</li>
+          <li>✉ <a href="mailto:semper-oberschule@semper-schulen.de">semper-oberschule@semper-schulen.de</a></li>
+          <li><a href="https://semper-schulen.de/oberschule-dresden/">semper-schulen.de</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span data-year>2025</span> Semper Oberschule Dresden</span>
+      <span><a href="https://semper-schulen.de/impressum/">Impressum</a> · <a href="https://semper-schulen.de/datenschutz/">Datenschutz</a></span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      var STARTER = [
+        '<canvas id="spiel" width="480" height="360"></canvas>',
+        '',
+        '<script>',
+        '// ===== MEIN SPIEL: Fange den Stern! =====',
+        '',
+        '// --- 1) HIER KANNST DU ETWAS EINSTELLEN ---',
+        'var geschwindigkeit = 3       // wie schnell der Stern faellt (1 langsam ... 10 schnell)',
+        'var spielerFarbe = "#0f766e"  // Farbe vom Faenger',
+        'var sternFarbe = "#f59e0b"    // Farbe vom Stern',
+        'var fangBreite = 80           // Breite vom Faenger',
+        'var punkteProStern = 1        // Punkte pro gefangenem Stern',
+        '// -----------------------------------------',
+        '',
+        'var leinwand = document.getElementById("spiel")',
+        'var stift = leinwand.getContext("2d")',
+        '',
+        'var spieler = { x: 200, y: 330 }',
+        'var stern = { x: 230, y: 30 }',
+        'var punkte = 0',
+        'var spielLaeuft = true',
+        '',
+        'document.addEventListener("keydown", taste)',
+        'leinwand.addEventListener("mousemove", maus)',
+        'leinwand.addEventListener("touchmove", finger)',
+        'leinwand.addEventListener("click", neuStart)',
+        '',
+        'function taste(e) {',
+        '  if (e.key == "ArrowLeft")  { spieler.x = spieler.x - 25; e.preventDefault() }',
+        '  if (e.key == "ArrowRight") { spieler.x = spieler.x + 25; e.preventDefault() }',
+        '  if (spieler.x < 0) spieler.x = 0',
+        '  if (spieler.x > 480 - fangBreite) spieler.x = 480 - fangBreite',
+        '}',
+        '',
+        'function maus(e) {',
+        '  var r = leinwand.getBoundingClientRect()',
+        '  spieler.x = e.clientX - r.left - fangBreite / 2',
+        '  taste({ key: "" })',
+        '}',
+        '',
+        'function finger(e) {',
+        '  var r = leinwand.getBoundingClientRect()',
+        '  spieler.x = e.touches[0].clientX - r.left - fangBreite / 2',
+        '  taste({ key: "" })',
+        '  e.preventDefault()',
+        '}',
+        '',
+        'function neuStart() {',
+        '  if (!spielLaeuft) {',
+        '    punkte = 0',
+        '    geschwindigkeit = geschwindigkeit0',
+        '    stern.x = 230',
+        '    stern.y = 30',
+        '    spielLaeuft = true',
+        '  }',
+        '}',
+        '',
+        'function malen() {',
+        '  // Hintergrund',
+        '  stift.fillStyle = "#0f172a"',
+        '  stift.fillRect(0, 0, 480, 360)',
+        '',
+        '  if (spielLaeuft) {',
+        '    stern.y = stern.y + geschwindigkeit',
+        '',
+        '    // Gefangen?',
+        '    if (stern.y + 20 >= spieler.y && stern.y <= spieler.y + 16 &&',
+        '        stern.x + 20 >= spieler.x && stern.x <= spieler.x + fangBreite) {',
+        '      punkte = punkte + punkteProStern',
+        '      geschwindigkeit = geschwindigkeit + 0.2',
+        '      stern.y = 0',
+        '      stern.x = Math.random() * (480 - 40)',
+        '    }',
+        '',
+        '    // Verfehlt?',
+        '    if (stern.y > 360) {',
+        '      spielLaeuft = false',
+        '    }',
+        '  }',
+        '',
+        '  // Stern zeichnen',
+        '  stift.fillStyle = sternFarbe',
+        '  stift.beginPath()',
+        '  stift.arc(stern.x + 10, stern.y + 10, 10, 0, 8)',
+        '  stift.fill()',
+        '',
+        '  // Faenger zeichnen',
+        '  stift.fillStyle = spielerFarbe',
+        '  stift.fillRect(spieler.x, spieler.y, fangBreite, 16)',
+        '',
+        '  // Punkte anzeigen',
+        '  stift.fillStyle = "#ffffff"',
+        '  stift.font = "20px sans-serif"',
+        '  stift.fillText("Punkte: " + punkte, 10, 28)',
+        '',
+        '  if (!spielLaeuft) {',
+        '    stift.fillStyle = "#ffffff"',
+        '    stift.font = "24px sans-serif"',
+        '    stift.fillText("Game over! Deine Punkte: " + punkte, 60, 180)',
+        '    stift.font = "18px sans-serif"',
+        '    stift.fillText("Klicke ins Spiel, um nochmal zu starten.", 75, 215)',
+        '  }',
+        '',
+        '  requestAnimationFrame(malen)',
+        '}',
+        '',
+        'var geschwindigkeit0 = geschwindigkeit',
+        'malen()',
+        '<\/script>'
+      ].join('\n');
+
+      var editor = document.getElementById('sgw-editor');
+      var vorschau = document.getElementById('sgw-vorschau');
+      var status = document.getElementById('sgw-status');
+      var SPEICHER = 'spieleWerkstattCode';
+
+      function setzeStatus(text) {
+        status.textContent = text;
+        window.clearTimeout(setzeStatus._timer);
+        setzeStatus._timer = window.setTimeout(function () { status.textContent = ''; }, 3000);
+      }
+
+      function baueVorschau() {
+        vorschau.srcdoc = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">'
+          + '<style>html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;background:#0f172a}'
+          + 'canvas{border-radius:14px;max-width:100%;touch-action:none}</style>'
+          + '</head><body>' + editor.value + '</body></html>';
+      }
+
+      editor.value = window.localStorage.getItem(SPEICHER) || STARTER;
+      baueVorschau();
+
+      document.getElementById('sgw-start').addEventListener('click', function () {
+        baueVorschau();
+        setzeStatus('Spiel gestartet – klicke einmal ins Spiel! 🎮');
+      });
+
+      document.getElementById('sgw-speichern').addEventListener('click', function () {
+        try {
+          window.localStorage.setItem(SPEICHER, editor.value);
+          setzeStatus('Gespeichert! ✅');
+        } catch (e) {
+          setzeStatus('Speichern hat nicht geklappt – aber du kannst weiter spielen!');
+        }
+      });
+
+      document.getElementById('sgw-reset').addEventListener('click', function () {
+        editor.value = STARTER;
+        try { window.localStorage.removeItem(SPEICHER); } catch (e) {}
+        baueVorschau();
+        setzeStatus('Original-Code zurückgeholt. ↩');
+      });
+    })();
+  </script>
+</body>
+</html>
