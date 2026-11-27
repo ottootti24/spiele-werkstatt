@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spiele-Werkstatt 🎮 – Baue deine eigenen Spiele</title>
-  <meta name="description" content="Die Spiele-Werkstatt: Baue in der 5. und 6. Klasse mit Bausteinen und Modulen deine eigenen Spiele – drei verschiedene Spiele parallel. Direkt im Browser, ohne Installation.">
+  <meta name="description" content="Die Spiele-Werkstatt: Baue in der 5. und 6. Klasse mit Bausteinen und Modulen deine eigenen Spiele – vier verschiedene Spiele parallel. Direkt im Browser, ohne Installation.">
   <link rel="icon" type="image/png" href="assets/img/semper-logo.png">
   <link rel="stylesheet" href="css/styles.css">
   <style>
-    .sgw-slotgrid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-    @media (min-width: 1100px) { .sgw-slotgrid { grid-template-columns: 1fr 1fr; } }
+    .sgw-slotgrid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: start; }
+    @media (min-width: 900px) { .sgw-slotgrid { grid-template-columns: 1fr 1fr; } }
     .sgw-slot {
       background: var(--card);
       border: 1px solid var(--line);
@@ -153,14 +153,14 @@
       <div class="container">
         <span class="kicker">Programmieren für Klasse 5 &amp; 6</span>
         <h1>Spiele-Werkstatt 🎮</h1>
-        <p>Hier warten <strong>drei verschiedene Spiele</strong> auf dich – jedes startet mit einer anderen Spielart: 🎯 Fangen, 🛡️ Ausweichen und ⚡ Reaktion. Baue sie mit Bausteinen um und <strong>tausche Module</strong> wie Steuerung, Spiel-Ende, Tempo und Bonus aus. Alles direkt im Browser, ohne Installation.</p>
+        <p>Hier warten <strong>vier verschiedene Spiele</strong> auf dich – 🎯 Fangen, 🛡️ Ausweichen und ⚡ Reaktion in vier Varianten. Baue sie mit Bausteinen um und <strong>tausche Module</strong> wie Steuerung, Spiel-Ende, Tempo und Bonus aus. Alles direkt im Browser, ohne Installation.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
         <div class="center">
-          <span class="kicker">Deine drei Spiele</span>
+          <span class="kicker">Deine vier Spiele</span>
           <h2>Jedes spielt sich anders</h2>
         </div>
         <div class="sgw-spielarten">
@@ -178,6 +178,11 @@
             <div class="card__icon" aria-hidden="true">⚡</div>
             <h3>Spiel 3: Blitz-Klick</h3>
             <p>⚡ <strong>Reaktion mit Bonus:</strong> Klicke Sterne an, bevor sie verschwinden – und ab 10 Punkten gibt es doppelte Punkte!</p>
+          </article>
+          <article class="card">
+            <div class="card__icon" aria-hidden="true">🦊</div>
+            <h3>Spiel 4: Punkte-Regen</h3>
+            <p>🍬 <strong>Endlos-Fangen mit der Maus:</strong> Kein Game over! Sammle Süßigkeiten im Dauerregen – aber jede 💣 kostet 5 Punkte.</p>
           </article>
         </div>
       </div>
@@ -218,13 +223,15 @@
       <div class="container">
         <div class="center">
           <span class="kicker">Deine Werkstatt</span>
-          <h2>Deine drei Spiele-Slots</h2>
+          <h2>Deine vier Spiele-Slots</h2>
           <p class="lead">Jeder Kasten ist ein eigenes, anderes Spiel. Steuere mit 🎯/🛡️ per Pfeiltasten ⬅️➡️ oder Maus, bei ⚡ klickst du die Dinge an. Nach „Game over“ einfach wieder ins Spiel klicken!</p>
         </div>
         <div class="sgw-slotgrid" style="margin-top:2rem">
 
           <article class="sgw-slot">
             <h3>🎮 Spiel 1 <small>🎯 Fangen · Sternenfang</small></h3>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-1" title="Spiel-Vorschau 1" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-1">🏆 Beste Runde: 0</p>
             <div id="sgw-blocks-1"></div>
             <div>
               <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein/Modul hinzufügen:</strong></p>
@@ -246,12 +253,12 @@
                 <button type="button" class="btn btn--light" id="sgw-codereset-1">↩ Baustein-Code</button>
               </div>
             </div>
-            <iframe class="sgw-vorschau" id="sgw-vorschau-1" title="Spiel-Vorschau 1" sandbox="allow-scripts"></iframe>
-            <p class="sgw-beste" id="sgw-beste-1">🏆 Beste Runde: 0</p>
           </article>
 
           <article class="sgw-slot">
             <h3>🎮 Spiel 2 <small>🛡️ Ausweichen · Meteoriten-Sturm</small></h3>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-2" title="Spiel-Vorschau 2" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-2">🏆 Beste Runde: 0</p>
             <div id="sgw-blocks-2"></div>
             <div>
               <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein/Modul hinzufügen:</strong></p>
@@ -273,12 +280,12 @@
                 <button type="button" class="btn btn--light" id="sgw-codereset-2">↩ Baustein-Code</button>
               </div>
             </div>
-            <iframe class="sgw-vorschau" id="sgw-vorschau-2" title="Spiel-Vorschau 2" sandbox="allow-scripts"></iframe>
-            <p class="sgw-beste" id="sgw-beste-2">🏆 Beste Runde: 0</p>
           </article>
 
           <article class="sgw-slot">
             <h3>🎮 Spiel 3 <small>⚡ Reaktion · Blitz-Klick</small></h3>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-3" title="Spiel-Vorschau 3" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-3">🏆 Beste Runde: 0</p>
             <div id="sgw-blocks-3"></div>
             <div>
               <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein/Modul hinzufügen:</strong></p>
@@ -300,8 +307,33 @@
                 <button type="button" class="btn btn--light" id="sgw-codereset-3">↩ Baustein-Code</button>
               </div>
             </div>
-            <iframe class="sgw-vorschau" id="sgw-vorschau-3" title="Spiel-Vorschau 3" sandbox="allow-scripts"></iframe>
-            <p class="sgw-beste" id="sgw-beste-3">🏆 Beste Runde: 0</p>
+          </article>
+
+          <article class="sgw-slot">
+            <h3>🎮 Spiel 4 <small>🍬 Fangen · Punkte-Regen</small></h3>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-4" title="Spiel-Vorschau 4" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-4">🏆 Beste Runde: 0</p>
+            <div id="sgw-blocks-4"></div>
+            <div>
+              <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein/Modul hinzufügen:</strong></p>
+              <div class="sgw-katalog" id="sgw-katalog-4"></div>
+            </div>
+            <div class="sgw-aktionen">
+              <button type="button" class="btn btn--primary" id="sgw-bauen-4">▶ Spiel bauen</button>
+              <button type="button" class="btn" id="sgw-speichern-4">💾 Speichern</button>
+              <button type="button" class="btn btn--light" id="sgw-reset-4">↩ Zurücksetzen</button>
+              <button type="button" class="btn btn--light" id="sgw-codeansehen-4" aria-expanded="false">📝 Code ansehen</button>
+            </div>
+            <p class="sgw-status" id="sgw-status-4" role="status"></p>
+            <div id="sgw-codebereich-4" hidden>
+              <label for="sgw-editor-4" class="sgw-hinweis">Echter Programmcode! Die <strong>MODULE</strong> sind markiert – so siehst du genau, welcher Teil was macht.</label>
+              <textarea class="sgw-editor" id="sgw-editor-4" spellcheck="false" aria-label="Spiel-Code von Spiel 4"></textarea>
+              <div class="sgw-aktionen">
+                <button type="button" class="btn btn--primary" id="sgw-start-4">▶ Code starten</button>
+                <button type="button" class="btn" id="sgw-codespeichern-4">💾 Code speichern</button>
+                <button type="button" class="btn btn--light" id="sgw-codereset-4">↩ Baustein-Code</button>
+              </div>
+            </div>
           </article>
 
         </div>
@@ -320,7 +352,8 @@
             <li>Ändere in <strong>Spiel 2</strong> das Modul <strong>🎛️ Steuerung</strong> auf „Nur Pfeiltasten“. Schaffst du die 30 Sekunden?</li>
             <li>Aktiviere in <strong>Spiel 3</strong> den <strong>🎁 Bonus „Doppelte Punkte ab 10“</strong>. Wann lohnt sich der Bonus?</li>
             <li>Stelle in <strong>Spiel 1</strong> das Modul <strong>🏁 Spiel-Ende</strong> auf <strong>∞ Endlos</strong>. Was passiert jetzt, wenn du einen Stern verfehlst?</li>
-            <li>Profi-Aufgabe: Klicke auf <strong>„📝 Code ansehen“</strong> und suche die <code>MODUL</code>-Schilder im Code. Finde das Bonus-Modul und lies, wie <code>punkteFuer</code> funktioniert.</li>
+            <li>Probiere <strong>Spiel 4 – Punkte-Regen</strong>: Endlos-Fangen mit der Maus! Wie viele Punkte schaffst du in einer Runde? Achtung: Jede 💣 kostet 5 Punkte.</li>
+            <li>Profi-Aufgabe: Klicke auf <strong>„📝 Code ansehen“</strong> und suche die <code>MODUL</code>-Schilder im Code. Finde das Bonus-Modul und lies, wie <code>gutePunkte</code> funktioniert.</li>
           </ol>
           <p class="sgw-hinweis" style="margin-top:1rem">Tipp: Wenn mal etwas schiefgeht – kein Problem! Klicke bei dem Spiel auf „↩ Zurücksetzen“ und alles ist wieder da.</p>
         </div>
@@ -489,6 +522,18 @@
           { typ: 'objekt', werte: { emoji: '⭐', punkte: 1, tempo: 4, gefahr: false } },
           { typ: 'objekt', werte: { emoji: '💣', punkte: 1, tempo: 2, gefahr: true } },
           { typ: 'modul_ende', werte: { art: 'leben', leben: 3 } },
+          { typ: 'modul_bonus', werte: { art: 'doppelt' } }
+        ],
+        '4': [
+          { typ: 'name', werte: { text: 'Punkte-Regen' } },
+          { typ: 'spielart', werte: { art: 'fangen' } },
+          { typ: 'hintergrund', werte: { farbe: '#3b0764' } },
+          { typ: 'faenger', werte: { emoji: '🦊', farbe: '#f59e0b', breite: 90 } },
+          { typ: 'objekt', werte: { emoji: '🍬', punkte: 1, tempo: 5, gefahr: false } },
+          { typ: 'objekt', werte: { emoji: '💣', punkte: 1, tempo: 3, gefahr: true } },
+          { typ: 'modul_steuerung', werte: { art: 'maus' } },
+          { typ: 'modul_ende', werte: { art: 'endlos', leben: 3 } },
+          { typ: 'modul_tempo', werte: { art: 'gleich' } },
           { typ: 'modul_bonus', werte: { art: 'doppelt' } }
         ]
       };
@@ -1443,6 +1488,7 @@
       machSlot(1);
       machSlot(2);
       machSlot(3);
+      machSlot(4);
     })();
   </script>
 </body>
