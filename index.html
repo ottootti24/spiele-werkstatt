@@ -1366,7 +1366,6 @@
                 eingabe = document.createElement('input');
                 eingabe.type = 'checkbox';
                 eingabe.checked = !!b.werte[f.name];
-                zeile.insertBefore(eingabe, beschriftung);
                 eingabe.addEventListener('change', function () { b.werte[f.name] = eingabe.checked; });
               } else {
                 eingabe = document.createElement('input');
@@ -1376,8 +1375,13 @@
                 eingabe.addEventListener('input', function () { b.werte[f.name] = eingabe.value; });
               }
 
-              zeile.appendChild(beschriftung);
-              zeile.appendChild(eingabe);
+              if (f.art === 'schalter') {
+                zeile.appendChild(eingabe);
+                zeile.appendChild(beschriftung);
+              } else {
+                zeile.appendChild(beschriftung);
+                zeile.appendChild(eingabe);
+              }
               karte.appendChild(zeile);
             });
 
