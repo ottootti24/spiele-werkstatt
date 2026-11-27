@@ -3,28 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spiele-Werkstatt 🎮 – Baue dein eigenes Spiel</title>
-  <meta name="description" content="Die Spiele-Werkstatt: Baue in der 5. und 6. Klasse mit Bausteinen dein eigenes Spiel – designen, ausprobieren, spielen. Direkt im Browser, ohne Installation.">
+  <title>Spiele-Werkstatt 🎮 – Baue deine eigenen Spiele</title>
+  <meta name="description" content="Die Spiele-Werkstatt: Baue in der 5. und 6. Klasse mit Bausteinen deine eigenen Spiele – drei Spielarten (Fangen, Ausweichen, Reaktion), drei Spiele parallel. Direkt im Browser, ohne Installation.">
   <link rel="icon" type="image/png" href="assets/img/semper-logo.png">
   <link rel="stylesheet" href="css/styles.css">
   <style>
-    .sgw-tabs { display: flex; gap: .5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .sgw-tabs button {
-      border: 1px solid var(--line);
-      background: var(--card);
-      border-radius: 999px;
-      padding: .5rem 1.1rem;
-      font-weight: 700;
-      font-size: .95rem;
-      cursor: pointer;
-      color: var(--ink-soft);
-    }
-    .sgw-tabs button.is-aktiv { background: var(--primary); border-color: var(--primary); color: #fff; }
-
-    .sgw-workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
-    @media (max-width: 900px) { .sgw-workspace { grid-template-columns: 1fr; } }
-
-    .sgw-panel {
+    .sgw-slotgrid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (min-width: 1100px) { .sgw-slotgrid { grid-template-columns: 1fr 1fr; } }
+    .sgw-slot {
       background: var(--card);
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -34,8 +20,7 @@
       flex-direction: column;
       gap: .75rem;
     }
-    .sgw-panel h3 { margin: 0; }
-
+    .sgw-slot h3 { margin: 0; }
     .sgw-block {
       border: 1px solid var(--line);
       border-left-width: 6px;
@@ -46,6 +31,7 @@
       margin-bottom: .6rem;
     }
     .sgw-block--name { border-left-color: #0ea5e9; }
+    .sgw-block--spielart { border-left-color: #2563eb; }
     .sgw-block--hintergrund { border-left-color: #8b5cf6; }
     .sgw-block--faenger { border-left-color: #0f766e; }
     .sgw-block--objekt { border-left-color: #f59e0b; }
@@ -59,6 +45,7 @@
     .sgw-feld { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .45rem; font-size: .9rem; color: var(--ink-soft); }
     .sgw-feld select, .sgw-feld input[type="number"], .sgw-feld input[type="text"] {
       font: inherit; padding: .25rem .5rem; border: 1px solid var(--line); border-radius: 8px; background: var(--bg);
+      max-width: 55%;
     }
     .sgw-feld input[type="color"] { width: 2.4rem; height: 1.8rem; padding: 0; border: 1px solid var(--line); border-radius: 8px; background: none; cursor: pointer; }
     .sgw-feld input[type="checkbox"] { width: 1.15rem; height: 1.15rem; cursor: pointer; }
@@ -81,28 +68,31 @@
     .sgw-status { font-size: .9rem; font-weight: 700; color: var(--primary-dark); min-height: 1.4em; margin: 0; }
     .sgw-beste { font-size: 1rem; font-weight: 800; color: var(--accent-dark); margin: 0; }
 
-    #sgw-editor {
-      min-height: 460px;
+    .sgw-editor {
+      min-height: 280px;
       width: 100%;
       resize: vertical;
       font-family: "Cascadia Code", Consolas, "Courier New", monospace;
-      font-size: .82rem;
+      font-size: .8rem;
       line-height: 1.5;
-      padding: .9rem;
+      padding: .8rem;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: #0f172a;
       color: #e2e8f0;
       tab-size: 2;
     }
-    #sgw-editor:focus { outline: 2px solid var(--primary); }
+    .sgw-editor:focus { outline: 2px solid var(--primary); }
     .sgw-vorschau {
       width: 100%;
-      height: 400px;
+      height: 360px;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: #0f172a;
     }
+
+    .sgw-spielarten { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .sgw-spielarten article { margin: 0; }
 
     .sgw-tasks { counter-reset: aufgabe; padding-left: 0; list-style: none; margin: 0; }
     .sgw-tasks li {
@@ -156,36 +146,31 @@
       <div class="container">
         <span class="kicker">Programmieren für Klasse 5 &amp; 6</span>
         <h1>Spiele-Werkstatt 🎮</h1>
-        <p>Entwirf und baue hier mit <strong>Bausteinen</strong> dein eigenes Spiel: Lege fest, wer fängt, was vom Himmel fällt, wie schnell es geht und wie viele Leben du hast. Klicke dann auf <strong>„▶ Spiel bauen“</strong> – und los geht's. Alles direkt im Browser, ohne Installation.</p>
+        <p>Baue hier mit <strong>Bausteinen</strong> gleich <strong>drei eigene Spiele</strong> – alle parallel auf dieser Seite! Wähle für jedes Spiel eine Spielart: 🎯 Fangen, 🛡️ Ausweichen oder ⚡ Reaktion. Klicke dann auf <strong>„▶ Spiel bauen“</strong> – und los geht's. Alles direkt im Browser, ohne Installation.</p>
       </div>
     </section>
 
     <section class="section">
       <div class="container">
         <div class="center">
-          <span class="kicker">So geht's</span>
-          <h2>In 4 Schritten zum eigenen Spiel</h2>
+          <span class="kicker">Drei Spielarten</span>
+          <h2>Welche Spiele baust du heute?</h2>
         </div>
-        <div class="grid grid--3" style="margin-top:1.5rem">
+        <div class="sgw-spielarten">
           <article class="card">
-            <div class="card__icon" aria-hidden="true">1️⃣</div>
-            <h3>Bausteine anschauen</h3>
-            <p>Dein Spiel besteht aus Bausteinen: <strong>🏷️ Spielname</strong>, <strong>🎨 Hintergrund</strong>, <strong>🧍 Fänger</strong>, <strong>⭐ Was fällt</strong> und <strong>🏆 Regeln</strong>.</p>
+            <div class="card__icon" aria-hidden="true">🎯</div>
+            <h3>Fangen</h3>
+            <p>Etwas fällt vom Himmel – fange es mit deinem Fänger ein! Gute Dinge bringen Punkte, Fallen 💣 kosten Leben.</p>
           </article>
           <article class="card">
-            <div class="card__icon" aria-hidden="true">2️⃣</div>
-            <h3>Designen &amp; einstellen</h3>
-            <p>Wähle Farben und Figuren, stelle Tempo und Punkte ein – und füge mit den <strong>＋-Knöpfen</strong> neue Bausteine hinzu, z.&nbsp;B. eine zweite Sorte „Was fällt“.</p>
+            <div class="card__icon" aria-hidden="true">🛡️</div>
+            <h3>Ausweichen</h3>
+            <p>Alles fliegt auf dich herab! Weiche aus, sammle Punkte für jedes Ding, das dich verfehlt – wie lange überlebst du?</p>
           </article>
           <article class="card">
-            <div class="card__icon" aria-hidden="true">3️⃣</div>
-            <h3>▶ Spiel bauen</h3>
-            <p>Klicke auf <strong>„▶ Spiel bauen“</strong>. Rechts siehst du sofort dein Spiel. Klicke einmal hinein, damit Tastatur und Maus funktionieren.</p>
-          </article>
-          <article class="card">
-            <div class="card__icon" aria-hidden="true">4️⃣</div>
-            <h3>Speichern &amp; Profi werden</h3>
-            <p>Mit <strong>„💾 Speichern“</strong> bleibt dein Spiel erhalten. Und wer mutig ist, klickt auf <strong>„📝 Code ansehen“</strong> – dort siehst du, wie dein Baustein-Spiel als echter Programmcode aussieht!</p>
+            <div class="card__icon" aria-hidden="true">⚡</div>
+            <h3>Reaktion</h3>
+            <p>Dinge erscheinen blitzartig im Spielfeld. Klicke die guten schnell an – aber fasst die Fallen 💣 niemals an!</p>
           </article>
         </div>
       </div>
@@ -195,51 +180,92 @@
       <div class="container">
         <div class="center">
           <span class="kicker">Deine Werkstatt</span>
-          <h2>Bausteine &amp; Spiel</h2>
+          <h2>Deine drei Spiele-Slots</h2>
+          <p class="lead">Jeder Kasten ist ein eigenes Spiel: eigene Bausteine, eigene Vorschau, eigene Bestpunktzahl. Steuere mit 🎯/🛡️ per Pfeiltasten ⬅️➡️ oder Maus, bei ⚡ klickst du die Dinge an. Nach „Game over“ einfach wieder ins Spiel klicken!</p>
         </div>
-        <div class="sgw-workspace" style="margin-top:2rem">
-          <div>
-            <div class="sgw-tabs" role="tablist">
-              <button type="button" id="tab-knopf-bausteine" class="is-aktiv" role="tab" aria-selected="true">🧱 Bausteine</button>
-              <button type="button" id="tab-knopf-code" role="tab" aria-selected="false">📝 Code</button>
-            </div>
+        <div class="sgw-slotgrid" style="margin-top:2rem">
 
-            <div class="sgw-panel" id="tab-bausteine">
-              <h3>🧱 Deine Bausteine</h3>
-              <div id="sgw-blocks"></div>
-              <div>
-                <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein hinzufügen:</strong></p>
-                <div class="sgw-katalog" id="sgw-katalog"></div>
-              </div>
+          <article class="sgw-slot">
+            <h3>🎮 Spiel 1</h3>
+            <div id="sgw-blocks-1"></div>
+            <div>
+              <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein hinzufügen:</strong></p>
+              <div class="sgw-katalog" id="sgw-katalog-1"></div>
+            </div>
+            <div class="sgw-aktionen">
+              <button type="button" class="btn btn--primary" id="sgw-bauen-1">▶ Spiel bauen</button>
+              <button type="button" class="btn" id="sgw-speichern-1">💾 Speichern</button>
+              <button type="button" class="btn btn--light" id="sgw-reset-1">↩ Zurücksetzen</button>
+              <button type="button" class="btn btn--light" id="sgw-codeansehen-1" aria-expanded="false">📝 Code ansehen</button>
+            </div>
+            <p class="sgw-status" id="sgw-status-1" role="status"></p>
+            <div id="sgw-codebereich-1" hidden>
+              <label for="sgw-editor-1" class="sgw-hinweis">Echter Programmcode! Oben steht der Kasten <strong>KONFIG</strong> – die Zahlen daraus stammen von deinen Bausteinen.</label>
+              <textarea class="sgw-editor" id="sgw-editor-1" spellcheck="false" aria-label="Spiel-Code von Spiel 1"></textarea>
               <div class="sgw-aktionen">
-                <button type="button" class="btn btn--primary" id="sgw-bauen">▶ Spiel bauen</button>
-                <button type="button" class="btn" id="sgw-speichern">💾 Speichern</button>
-                <button type="button" class="btn btn--light" id="sgw-reset">↩ Alles zurücksetzen</button>
+                <button type="button" class="btn btn--primary" id="sgw-start-1">▶ Code starten</button>
+                <button type="button" class="btn" id="sgw-codespeichern-1">💾 Code speichern</button>
+                <button type="button" class="btn btn--light" id="sgw-codereset-1">↩ Baustein-Code</button>
               </div>
-              <p class="sgw-status" id="sgw-status" role="status"></p>
-              <p class="sgw-hinweis">Deine Bausteine werden nur in deinem Browser gespeichert – auf deinem eigenen Laptop bleibt dein Spiel also erhalten.</p>
             </div>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-1" title="Spiel-Vorschau 1" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-1">🏆 Beste Runde: 0</p>
+          </article>
 
-            <div class="sgw-panel" id="tab-code" hidden>
-              <h3>📝 Dein Code</h3>
-              <p class="sgw-hinweis">Das ist dein Spiel als echter Programmcode! Der obere Teil (<strong>KONFIG</strong>) kommt direkt aus deinen Bausteinen – dort kannst du Zahlen ändern.</p>
-              <label for="sgw-editor" style="font-size:.9rem;color:var(--muted)">Du kannst den Text im Kasten direkt ändern:</label>
-              <textarea id="sgw-editor" spellcheck="false" aria-label="Spiel-Code zum Bearbeiten"></textarea>
+          <article class="sgw-slot">
+            <h3>🎮 Spiel 2</h3>
+            <div id="sgw-blocks-2"></div>
+            <div>
+              <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein hinzufügen:</strong></p>
+              <div class="sgw-katalog" id="sgw-katalog-2"></div>
+            </div>
+            <div class="sgw-aktionen">
+              <button type="button" class="btn btn--primary" id="sgw-bauen-2">▶ Spiel bauen</button>
+              <button type="button" class="btn" id="sgw-speichern-2">💾 Speichern</button>
+              <button type="button" class="btn btn--light" id="sgw-reset-2">↩ Zurücksetzen</button>
+              <button type="button" class="btn btn--light" id="sgw-codeansehen-2" aria-expanded="false">📝 Code ansehen</button>
+            </div>
+            <p class="sgw-status" id="sgw-status-2" role="status"></p>
+            <div id="sgw-codebereich-2" hidden>
+              <label for="sgw-editor-2" class="sgw-hinweis">Echter Programmcode! Oben steht der Kasten <strong>KONFIG</strong> – die Zahlen daraus stammen von deinen Bausteinen.</label>
+              <textarea class="sgw-editor" id="sgw-editor-2" spellcheck="false" aria-label="Spiel-Code von Spiel 2"></textarea>
               <div class="sgw-aktionen">
-                <button type="button" class="btn btn--primary" id="sgw-start">▶ Spiel starten</button>
-                <button type="button" class="btn" id="sgw-code-speichern">💾 Code speichern</button>
-                <button type="button" class="btn btn--light" id="sgw-code-reset">↩ Original-Code</button>
+                <button type="button" class="btn btn--primary" id="sgw-start-2">▶ Code starten</button>
+                <button type="button" class="btn" id="sgw-codespeichern-2">💾 Code speichern</button>
+                <button type="button" class="btn btn--light" id="sgw-codereset-2">↩ Baustein-Code</button>
               </div>
-              <p class="sgw-hinweis">Tipp: Wenn im Code etwas schiefgeht, hol dir mit „↩ Original-Code“ dein Baustein-Spiel zurück.</p>
             </div>
-          </div>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-2" title="Spiel-Vorschau 2" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-2">🏆 Beste Runde: 0</p>
+          </article>
 
-          <div class="sgw-panel">
-            <h3>🕹️ Dein Spiel</h3>
-            <iframe class="sgw-vorschau" id="sgw-vorschau" title="Spiel-Vorschau" sandbox="allow-scripts"></iframe>
-            <p class="sgw-beste" id="sgw-beste">🏆 Beste Runde: 0</p>
-            <p class="sgw-hinweis">Steuerung: Pfeiltasten ⬅️➡️ oder Maus bzw. Finger – ganz wie du es im Fänger-Baustein eingestellt hast. Nach „Game over“ klickst du einfach ins Spiel für eine neue Runde.</p>
-          </div>
+          <article class="sgw-slot">
+            <h3>🎮 Spiel 3</h3>
+            <div id="sgw-blocks-3"></div>
+            <div>
+              <p class="sgw-hinweis" style="margin-bottom:.4rem"><strong>Baustein hinzufügen:</strong></p>
+              <div class="sgw-katalog" id="sgw-katalog-3"></div>
+            </div>
+            <div class="sgw-aktionen">
+              <button type="button" class="btn btn--primary" id="sgw-bauen-3">▶ Spiel bauen</button>
+              <button type="button" class="btn" id="sgw-speichern-3">💾 Speichern</button>
+              <button type="button" class="btn btn--light" id="sgw-reset-3">↩ Zurücksetzen</button>
+              <button type="button" class="btn btn--light" id="sgw-codeansehen-3" aria-expanded="false">📝 Code ansehen</button>
+            </div>
+            <p class="sgw-status" id="sgw-status-3" role="status"></p>
+            <div id="sgw-codebereich-3" hidden>
+              <label for="sgw-editor-3" class="sgw-hinweis">Echter Programmcode! Oben steht der Kasten <strong>KONFIG</strong> – die Zahlen daraus stammen von deinen Bausteinen.</label>
+              <textarea class="sgw-editor" id="sgw-editor-3" spellcheck="false" aria-label="Spiel-Code von Spiel 3"></textarea>
+              <div class="sgw-aktionen">
+                <button type="button" class="btn btn--primary" id="sgw-start-3">▶ Code starten</button>
+                <button type="button" class="btn" id="sgw-codespeichern-3">💾 Code speichern</button>
+                <button type="button" class="btn btn--light" id="sgw-codereset-3">↩ Baustein-Code</button>
+              </div>
+            </div>
+            <iframe class="sgw-vorschau" id="sgw-vorschau-3" title="Spiel-Vorschau 3" sandbox="allow-scripts"></iframe>
+            <p class="sgw-beste" id="sgw-beste-3">🏆 Beste Runde: 0</p>
+          </article>
+
         </div>
       </div>
     </section>
@@ -252,13 +278,13 @@
         </div>
         <div style="max-width:760px;margin:2rem auto 0">
           <ol class="sgw-tasks">
-            <li>Mache deinen Fänger riesig: Stelle die <strong>Breite</strong> im Fänger-Baustein auf 240. Ist das Spiel jetzt leichter? Und noch fair?</li>
-            <li>Füge einen zweiten „Was fällt“-Baustein hinzu und wähle 💣 als Bild. Hake <strong>„Achtung, nicht fangen!“</strong> an – jetzt musst du der Bombe ausweichen!</li>
-            <li>Erfinde einen Candy-Modus: 🍬 fällt langsam (Tempo 2), bringt aber 5 Punkte. Lohnt sich das Warten?</li>
-            <li>Stelle bei <strong>🏆 Regeln</strong> „1 Leben“ ein und hake beim ⭐ <strong>„Wird immer schneller“</strong> an. Wie lange überlebst du?</li>
-            <li>Profi-Aufgabe: Klicke auf <strong>„📝 Code ansehen“</strong> und finde oben den Kasten <code>KONFIG</code>. Ändere dort eine Zahl, klicke „▶ Spiel starten“ – was passiert?</li>
+            <li>Baue in <strong>Spiel 1</strong> ein 🎯 <strong>Fang</strong>-Spiel mit einer 💣-Falle. Was passiert, wenn du die Bombe fängst?</li>
+            <li>Mache in <strong>Spiel 2</strong> ein 🛡️ <strong>Ausweich</strong>-Spiel mit Flug-Tempo 6. Wie lange überlebst du?</li>
+            <li>Baue in <strong>Spiel 3</strong> ein ⚡ <strong>Reaktions</strong>-Spiel mit 💣-Fallen, die man nie anklicken darf!</li>
+            <li>Vergleiche deine drei Spiele: Welche <strong>Beste Runde</strong> ist am höchsten? Ändere bei deinem Sieger-Spiel die Punkte auf 5 – bleibt es fair?</li>
+            <li>Profi-Aufgabe: Klicke bei einem Spiel auf <strong>„📝 Code ansehen“</strong> und finde den Kasten <code>KONFIG</code>. Ändere dort eine Zahl und klicke „▶ Code starten“ – was passiert?</li>
           </ol>
-          <p class="sgw-hinweis" style="margin-top:1rem">Tipp: Wenn mal etwas schiefgeht – kein Problem! Klicke auf „↩ Alles zurücksetzen“ und alles ist wieder da.</p>
+          <p class="sgw-hinweis" style="margin-top:1rem">Tipp: Wenn mal etwas schiefgeht – kein Problem! Klicke bei dem Spiel auf „↩ Zurücksetzen“ und alles ist wieder da.</p>
         </div>
       </div>
     </section>
@@ -301,48 +327,68 @@
     (function () {
       'use strict';
 
-      var SPEICHER_BLOECKE = 'spieleWerkstattBloecke';
-      var SPEICHER_CODE = 'spieleWerkstattCode';
-      var SPEICHER_BESTE = 'spieleWerkstattBeste';
-
       var KATALOG = {
         name: {
           titel: '🏷️ Spielname',
+          modi: ['fangen', 'ausweichen', 'reaktion'],
           max: 1,
           felder: [
             { name: 'text', label: 'Wie heißt dein Spiel?', art: 'text', wert: 'Mein erstes Spiel' }
           ]
         },
+        spielart: {
+          titel: '🎮 Spielart',
+          modi: ['fangen', 'ausweichen', 'reaktion'],
+          max: 1,
+          felder: [
+            {
+              name: 'art',
+              label: 'Wie soll man spielen?',
+              art: 'wahl',
+              optionen: [
+                ['fangen', '🎯 Fangen – fange Gutes, meide Fallen'],
+                ['ausweichen', '🛡️ Ausweichen – überlebe so lange wie möglich'],
+                ['reaktion', '⚡ Reaktion – klicke schnell das Gute an']
+              ],
+              wert: 'fangen',
+              neuZeichnen: true
+            }
+          ]
+        },
         hintergrund: {
           titel: '🎨 Hintergrund',
+          modi: ['fangen', 'ausweichen', 'reaktion'],
           max: 1,
           felder: [
             { name: 'farbe', label: 'Hintergrund-Farbe', art: 'farbe', wert: '#0f172a' }
           ]
         },
         faenger: {
-          titel: '🧍 Mein Fänger',
+          titel: { fangen: '🧍 Mein Fänger', ausweichen: '🛡️ Deine Figur' },
+          modi: ['fangen', 'ausweichen'],
           max: 1,
           felder: [
-            { name: 'emoji', label: 'Wer fängt?', art: 'wahl', optionen: ['🧺', '🚀', '🦊', '🐸', '🤖', '🧑‍🚀'], wert: '🧺' },
+            { name: 'emoji', label: { fangen: 'Wer fängt?', ausweichen: 'Deine Figur' }, art: 'wahl', optionen: ['🧺', '🚀', '🦊', '🐸', '🤖', '🧑‍🚀'], wert: '🧺' },
             { name: 'farbe', label: 'Plattform-Farbe', art: 'farbe', wert: '#0f766e' },
             { name: 'breite', label: 'Breite', art: 'zahl', min: 40, max: 240, wert: 80 },
             { name: 'steuerung', label: 'Steuerung', art: 'wahl', optionen: [['tasten', 'Nur Pfeiltasten ⬅️➡️'], ['maus', 'Nur Maus / Finger'], ['beides', 'Beides']], wert: 'beides' }
           ]
         },
         objekt: {
-          titel: '⭐ Etwas fällt vom Himmel',
+          titel: { fangen: '⭐ Etwas fällt vom Himmel', ausweichen: '☄️ Etwas fliegt herab', reaktion: '✨ Dinge zum Anklicken' },
+          modi: ['fangen', 'ausweichen', 'reaktion'],
           max: 3,
           felder: [
-            { name: 'emoji', label: 'Was fällt?', art: 'wahl', optionen: ['⭐', '🌟', '🔴', '🍬', '❄️', '🎈', '💎', '🍩', '💣', '🪨'], wert: '⭐' },
-            { name: 'punkte', label: 'Punkte', art: 'zahl', min: 1, max: 10, wert: 1 },
-            { name: 'tempo', label: 'Tempo', art: 'zahl', min: 1, max: 10, wert: 3 },
-            { name: 'schneller', label: 'Wird immer schneller', art: 'schalter', wert: true },
-            { name: 'gefahr', label: '☠️ Achtung, nicht fangen!', art: 'schalter', wert: false }
+            { name: 'emoji', label: { fangen: 'Was fällt?', ausweichen: 'Was fliegt herab?', reaktion: 'Was erscheint?' }, art: 'wahl', optionen: ['⭐', '🌟', '🔴', '🍬', '❄️', '🎈', '💎', '🍩', '💣', '🪨'], wert: '⭐' },
+            { name: 'punkte', label: { fangen: 'Punkte pro Fang', ausweichen: 'Punkte pro Ausweichen', reaktion: 'Punkte pro Klick' }, art: 'zahl', min: 1, max: 10, wert: 1 },
+            { name: 'tempo', label: { fangen: 'Fall-Tempo', ausweichen: 'Flug-Tempo', reaktion: 'Sichtbarkeit (1 = lang, 10 = kurz)' }, art: 'zahl', min: 1, max: 10, wert: 3 },
+            { name: 'schneller', label: 'Wird immer schneller', art: 'schalter', wert: true, ohne: ['reaktion'] },
+            { name: 'gefahr', label: { fangen: '☠️ Achtung, nicht fangen!', reaktion: '☠️ Falle – nicht anklicken!' }, art: 'schalter', wert: false, ohne: ['ausweichen'] }
           ]
         },
         regeln: {
           titel: '🏆 Regeln',
+          modi: ['fangen', 'ausweichen', 'reaktion'],
           max: 1,
           felder: [
             { name: 'leben', label: 'Leben', art: 'wahl', optionen: [[1, '1 Leben'], [3, '3 Leben']], wert: 3 }
@@ -352,14 +398,60 @@
 
       var STANDARD = [
         { typ: 'name', werte: { text: 'Mein erstes Spiel' } },
+        { typ: 'spielart', werte: { art: 'fangen' } },
         { typ: 'hintergrund', werte: { farbe: '#0f172a' } },
         { typ: 'faenger', werte: { emoji: '🧺', farbe: '#0f766e', breite: 80, steuerung: 'beides' } },
         { typ: 'objekt', werte: { emoji: '⭐', punkte: 1, tempo: 3, schneller: true, gefahr: false } },
         { typ: 'regeln', werte: { leben: 3 } }
       ];
 
-      var ENGINE = [
-        '// ===== Der Spiel-Motor =====',
+      function titelFuer(k, m) {
+        return typeof k.titel === 'string' ? k.titel : k.titel[m];
+      }
+      function labelFuer(f, m) {
+        return typeof f.label === 'string' ? f.label : f.label[m];
+      }
+      function standardWerte(typ) {
+        var w = {};
+        KATALOG[typ].felder.forEach(function (f) { w[f.name] = f.wert; });
+        return w;
+      }
+      function baueKonfigAus(liste, fuerModus) {
+        var objekte = liste.filter(function (b) { return b.typ === 'objekt'; });
+        if (!objekte.length) return null;
+        function wert(typ, name, ersatz) {
+          var b = null;
+          for (var i = 0; i < liste.length; i++) { if (liste[i].typ === typ) { b = liste[i]; break; } }
+          return b ? b.werte[name] : ersatz;
+        }
+        var k = {
+          spielart: fuerModus,
+          name: wert('name', 'text', 'Mein Spiel'),
+          hintergrund: wert('hintergrund', 'farbe', '#0f172a'),
+          objekte: objekte.map(function (o) {
+            return {
+              emoji: o.werte.emoji,
+              punkte: Number(o.werte.punkte) || 1,
+              tempo: Number(o.werte.tempo) || 3,
+              schneller: !!o.werte.schneller,
+              gefahr: !!o.werte.gefahr
+            };
+          }),
+          leben: Number(wert('regeln', 'leben', 3)) || 3
+        };
+        if (fuerModus !== 'reaktion') {
+          k.faenger = {
+            emoji: wert('faenger', 'emoji', '🧺'),
+            farbe: wert('faenger', 'farbe', '#0f766e'),
+            breite: Number(wert('faenger', 'breite', 80)) || 80,
+            steuerung: wert('faenger', 'steuerung', 'beides')
+          };
+        }
+        return k;
+      }
+
+      var ENGINE_FANGEN = [
+        '// ===== Der Spiel-Motor (Fangen) =====',
         '// (Das ist der Teil, der das Spiel laufen laesst.',
         '//  Oben bei KONFIG kannst du alles veraendern!)',
         '',
@@ -390,7 +482,7 @@
         'allesNeu()',
         '',
         'function melde(wert) {',
-        '  try { parent.postMessage({ typ: "punkte", punkte: wert }, "*") } catch (e) {}',
+        '  try { parent.postMessage({ spiel: KONFIG.name, typ: "punkte", punkte: wert }, "*") } catch (e) {}',
         '}',
         '',
         'function klick() {',
@@ -408,13 +500,17 @@
         'leinwand.addEventListener("touchmove", finger)',
         'leinwand.addEventListener("click", klick)',
         '',
+        'function spielerGrenzen() {',
+        '  if (spieler.x < 0) spieler.x = 0',
+        '  if (spieler.x > B - KONFIG.faenger.breite) spieler.x = B - KONFIG.faenger.breite',
+        '}',
+        '',
         'function taste(e) {',
         '  if (e.key == " " || e.key == "Enter") { klick(); return }',
         '  if (KONFIG.faenger.steuerung == "maus") return',
         '  if (e.key == "ArrowLeft") { spieler.x = spieler.x - 25; e.preventDefault() }',
         '  if (e.key == "ArrowRight") { spieler.x = spieler.x + 25; e.preventDefault() }',
-        '  if (spieler.x < 0) spieler.x = 0',
-        '  if (spieler.x > B - KONFIG.faenger.breite) spieler.x = B - KONFIG.faenger.breite',
+        '  spielerGrenzen()',
         '}',
         '',
         'function maus(e) {',
@@ -422,8 +518,7 @@
         '  if (e.clientX === undefined) return',
         '  var r = leinwand.getBoundingClientRect()',
         '  spieler.x = (e.clientX - r.left) * (B / r.width) - KONFIG.faenger.breite / 2',
-        '  if (spieler.x < 0) spieler.x = 0',
-        '  if (spieler.x > B - KONFIG.faenger.breite) spieler.x = B - KONFIG.faenger.breite',
+        '  spielerGrenzen()',
         '}',
         '',
         'function finger(e) {',
@@ -502,7 +597,7 @@
         '    stift.fillText(KONFIG.name, B / 2, H / 2 - 40)',
         '    if (punkte == 0 && beste == 0) {',
         '      stift.font = "18px sans-serif"',
-        '      stift.fillText("Klicke ins Spiel oder drücke die Leertaste!", B / 2, H / 2)',
+        '      stift.fillText("Fange die guten Dinge! Klicke ins Spiel zum Start.", B / 2, H / 2)',
         '    } else {',
         '      stift.font = "22px sans-serif"',
         '      stift.fillText("Deine Punkte: " + punkte, B / 2, H / 2)',
@@ -516,269 +611,580 @@
         'malen()'
       ].join('\n');
 
-      var editor = document.getElementById('sgw-editor');
-      var vorschau = document.getElementById('sgw-vorschau');
-      var status = document.getElementById('sgw-status');
-      var besteEl = document.getElementById('sgw-beste');
-      var blocksBox = document.getElementById('sgw-blocks');
-      var katalogBox = document.getElementById('sgw-katalog');
+      var ENGINE_AUSWEICHEN = [
+        '// ===== Der Spiel-Motor (Ausweichen) =====',
+        '// (Das ist der Teil, der das Spiel laufen laesst.',
+        '//  Oben bei KONFIG kannst du alles veraendern!)',
+        '',
+        'var leinwand = document.getElementById("spiel")',
+        'var stift = leinwand.getContext("2d")',
+        'var B = 480',
+        'var H = 360',
+        '',
+        'var spieler = { x: (B - KONFIG.faenger.breite) / 2, y: H - 30 }',
+        'var punkte = 0',
+        'var beste = 0',
+        'var leben = KONFIG.leben',
+        'var laeuft = false',
+        'var dinger = []',
+        'var warte = 0',
+        '',
+        'for (var i = 0; i < KONFIG.objekte.length; i++) {',
+        '  KONFIG.objekte[i].tempo0 = KONFIG.objekte[i].tempo',
+        '}',
+        '',
+        'function neuesDing() {',
+        '  var nummer = Math.floor(Math.random() * KONFIG.objekte.length)',
+        '  var typ = KONFIG.objekte[nummer]',
+        '  dinger.push({ typ: typ, x: Math.random() * (B - 40), y: -30 })',
+        '}',
+        '',
+        'function allesNeu() {',
+        '  punkte = 0',
+        '  leben = KONFIG.leben',
+        '  dinger = []',
+        '  warte = 0',
+        '}',
+        '',
+        'function melde(wert) {',
+        '  try { parent.postMessage({ spiel: KONFIG.name, typ: "punkte", punkte: wert }, "*") } catch (e) {}',
+        '}',
+        '',
+        'function klick() {',
+        '  if (!laeuft) {',
+        '    for (var i = 0; i < KONFIG.objekte.length; i++) {',
+        '      KONFIG.objekte[i].tempo = KONFIG.objekte[i].tempo0',
+        '    }',
+        '    allesNeu()',
+        '    laeuft = true',
+        '  }',
+        '}',
+        '',
+        'document.addEventListener("keydown", taste)',
+        'leinwand.addEventListener("mousemove", maus)',
+        'leinwand.addEventListener("touchmove", finger)',
+        'leinwand.addEventListener("click", klick)',
+        '',
+        'function spielerGrenzen() {',
+        '  if (spieler.x < 0) spieler.x = 0',
+        '  if (spieler.x > B - KONFIG.faenger.breite) spieler.x = B - KONFIG.faenger.breite',
+        '}',
+        '',
+        'function taste(e) {',
+        '  if (e.key == " " || e.key == "Enter") { klick(); return }',
+        '  if (KONFIG.faenger.steuerung == "maus") return',
+        '  if (e.key == "ArrowLeft") { spieler.x = spieler.x - 25; e.preventDefault() }',
+        '  if (e.key == "ArrowRight") { spieler.x = spieler.x + 25; e.preventDefault() }',
+        '  spielerGrenzen()',
+        '}',
+        '',
+        'function maus(e) {',
+        '  if (KONFIG.faenger.steuerung == "tasten") return',
+        '  if (e.clientX === undefined) return',
+        '  var r = leinwand.getBoundingClientRect()',
+        '  spieler.x = (e.clientX - r.left) * (B / r.width) - KONFIG.faenger.breite / 2',
+        '  spielerGrenzen()',
+        '}',
+        '',
+        'function finger(e) {',
+        '  e.clientX = e.touches[0].clientX',
+        '  maus(e)',
+        '  e.preventDefault()',
+        '}',
+        '',
+        'function malen() {',
+        '  stift.fillStyle = KONFIG.hintergrund',
+        '  stift.fillRect(0, 0, B, H)',
+        '',
+        '  if (laeuft) {',
+        '    warte = warte - 1',
+        '    if (warte <= 0 && dinger.length < 5) {',
+        '      neuesDing()',
+        '      warte = 70',
+        '    }',
+        '',
+        '    for (var i = 0; i < dinger.length; i++) {',
+        '      var d = dinger[i]',
+        '      d.y = d.y + d.typ.tempo',
+        '',
+        '      var mitteX = d.x + 14',
+        '      var mitteY = d.y + 14',
+        '      var inDerBreite = mitteX >= spieler.x && mitteX <= spieler.x + KONFIG.faenger.breite',
+        '      var inDerHoehe = mitteY >= spieler.y - 22 && mitteY <= spieler.y + 14',
+        '',
+        '      if (inDerBreite && inDerHoehe) {',
+        '        leben = leben - 1',
+        '        d.y = -30',
+        '        d.x = Math.random() * (B - 40)',
+        '      } else if (d.y > H + 10) {',
+        '        punkte = punkte + d.typ.punkte',
+        '        if (punkte > beste) {',
+        '          beste = punkte',
+        '          melde(beste)',
+        '        }',
+        '        if (d.typ.schneller) { d.typ.tempo = d.typ.tempo + 0.1 }',
+        '        dinger.splice(i, 1)',
+        '        i = i - 1',
+        '      }',
+        '    }',
+        '',
+        '    if (leben <= 0) {',
+        '      laeuft = false',
+        '      melde(punkte)',
+        '    }',
+        '  }',
+        '',
+        '  stift.fillStyle = KONFIG.faenger.farbe',
+        '  stift.fillRect(spieler.x, spieler.y, KONFIG.faenger.breite, 14)',
+        '  stift.font = "26px sans-serif"',
+        '  stift.textAlign = "center"',
+        '  stift.fillText(KONFIG.faenger.emoji, spieler.x + KONFIG.faenger.breite / 2, spieler.y + 8)',
+        '',
+        '  stift.font = "24px sans-serif"',
+        '  for (var j = 0; j < dinger.length; j++) {',
+        '    stift.fillText(dinger[j].typ.emoji, dinger[j].x + 14, dinger[j].y + 24)',
+        '  }',
+        '',
+        '  stift.textAlign = "left"',
+        '  stift.fillStyle = "#ffffff"',
+        '  stift.font = "18px sans-serif"',
+        '  stift.fillText("Punkte: " + punkte, 10, 26)',
+        '  var herzen = ""',
+        '  for (var k = 0; k < leben; k++) { herzen = herzen + "❤️" }',
+        '  stift.fillText(herzen, B - 100, 26)',
+        '',
+        '  if (!laeuft) {',
+        '    stift.fillStyle = "rgba(0,0,0,0.65)"',
+        '    stift.fillRect(0, 0, B, H)',
+        '    stift.fillStyle = "#ffffff"',
+        '    stift.textAlign = "center"',
+        '    stift.font = "26px sans-serif"',
+        '    stift.fillText(KONFIG.name, B / 2, H / 2 - 40)',
+        '    if (punkte == 0 && beste == 0) {',
+        '      stift.font = "18px sans-serif"',
+        '      stift.fillText("Weiche allen Dingen aus! Klicke ins Spiel zum Start.", B / 2, H / 2)',
+        '    } else {',
+        '      stift.font = "22px sans-serif"',
+        '      stift.fillText("Deine Punkte: " + punkte, B / 2, H / 2)',
+        '      stift.font = "18px sans-serif"',
+        '      stift.fillText("Beste Runde: " + beste + " · Nochmal? Einfach klicken!", B / 2, H / 2 + 30)',
+        '    }',
+        '  }',
+        '',
+        '  requestAnimationFrame(malen)',
+        '}',
+        'malen()'
+      ].join('\n');
 
-      function setzeStatus(text) {
-        status.textContent = text;
-        if (setzeStatus._timer) window.clearTimeout(setzeStatus._timer);
-        setzeStatus._timer = window.setTimeout(function () { status.textContent = ''; }, 3500);
-      }
+      var ENGINE_REAKTION = [
+        '// ===== Der Spiel-Motor (Reaktion) =====',
+        '// (Das ist der Teil, der das Spiel laufen laesst.',
+        '//  Oben bei KONFIG kannst du alles veraendern!)',
+        '',
+        'var leinwand = document.getElementById("spiel")',
+        'var stift = leinwand.getContext("2d")',
+        'var B = 480',
+        'var H = 360',
+        '',
+        'var punkte = 0',
+        'var beste = 0',
+        'var leben = KONFIG.leben',
+        'var laeuft = false',
+        'var dinger = []',
+        'var warte = 30',
+        '',
+        'function sichtbareBilder(typ) {',
+        '  return Math.round((12 - typ.tempo) / 5 * 60)',
+        '}',
+        '',
+        'function neuesDing() {',
+        '  var nummer = Math.floor(Math.random() * KONFIG.objekte.length)',
+        '  var typ = KONFIG.objekte[nummer]',
+        '  dinger.push({',
+        '    typ: typ,',
+        '    x: 40 + Math.random() * (B - 100),',
+        '    y: 70 + Math.random() * (H - 160),',
+        '    zeit: sichtbareBilder(typ)',
+        '  })',
+        '}',
+        '',
+        'function allesNeu() {',
+        '  punkte = 0',
+        '  leben = KONFIG.leben',
+        '  dinger = []',
+        '  warte = 30',
+        '}',
+        '',
+        'function melde(wert) {',
+        '  try { parent.postMessage({ spiel: KONFIG.name, typ: "punkte", punkte: wert }, "*") } catch (e) {}',
+        '}',
+        '',
+        'function klick() {',
+        '  if (!laeuft) {',
+        '    allesNeu()',
+        '    laeuft = true',
+        '  }',
+        '}',
+        '',
+        'document.addEventListener("keydown", taste)',
+        'leinwand.addEventListener("click", klickeDrauf)',
+        '',
+        'function taste(e) {',
+        '  if (e.key == " " || e.key == "Enter") { klick() }',
+        '}',
+        '',
+        'function klickeDrauf(e) {',
+        '  if (!laeuft) { klick(); return }',
+        '  var r = leinwand.getBoundingClientRect()',
+        '  var kx = (e.clientX - r.left) * (B / r.width)',
+        '  var ky = (e.clientY - r.top) * (H / r.height)',
+        '  for (var i = dinger.length - 1; i >= 0; i--) {',
+        '    var abstandX = kx - (dinger[i].x + 14)',
+        '    var abstandY = ky - (dinger[i].y + 14)',
+        '    if (abstandX * abstandX + abstandY * abstandY < 28 * 28) {',
+        '      if (dinger[i].typ.gefahr) {',
+        '        leben = leben - 1',
+        '      } else {',
+        '        punkte = punkte + dinger[i].typ.punkte',
+        '        if (punkte > beste) {',
+        '          beste = punkte',
+        '          melde(beste)',
+        '        }',
+        '      }',
+        '      dinger.splice(i, 1)',
+        '      return',
+        '    }',
+        '  }',
+        '}',
+        '',
+        'function malen() {',
+        '  stift.fillStyle = KONFIG.hintergrund',
+        '  stift.fillRect(0, 0, B, H)',
+        '',
+        '  if (laeuft) {',
+        '    warte = warte - 1',
+        '    if (warte <= 0 && dinger.length < 3) {',
+        '      neuesDing()',
+        '      warte = 90',
+        '    }',
+        '',
+        '    for (var i = 0; i < dinger.length; i++) {',
+        '      var d = dinger[i]',
+        '      d.zeit = d.zeit - 1',
+        '      if (d.zeit <= 0) {',
+        '        if (!d.typ.gefahr) { leben = leben - 1 }',
+        '        dinger.splice(i, 1)',
+        '        i = i - 1',
+        '      }',
+        '    }',
+        '',
+        '    if (leben <= 0) {',
+        '      laeuft = false',
+        '      melde(punkte)',
+        '    }',
+        '  }',
+        '',
+        '  stift.font = "28px sans-serif"',
+        '  stift.textAlign = "center"',
+        '  for (var j = 0; j < dinger.length; j++) {',
+        '    stift.fillText(dinger[j].typ.emoji, dinger[j].x + 14, dinger[j].y + 24)',
+        '  }',
+        '',
+        '  stift.textAlign = "left"',
+        '  stift.fillStyle = "#ffffff"',
+        '  stift.font = "18px sans-serif"',
+        '  stift.fillText("Punkte: " + punkte, 10, 26)',
+        '  var herzen = ""',
+        '  for (var k = 0; k < leben; k++) { herzen = herzen + "❤️" }',
+        '  stift.fillText(herzen, B - 100, 26)',
+        '',
+        '  if (!laeuft) {',
+        '    stift.fillStyle = "rgba(0,0,0,0.65)"',
+        '    stift.fillRect(0, 0, B, H)',
+        '    stift.fillStyle = "#ffffff"',
+        '    stift.textAlign = "center"',
+        '    stift.font = "26px sans-serif"',
+        '    stift.fillText(KONFIG.name, B / 2, H / 2 - 40)',
+        '    if (punkte == 0 && beste == 0) {',
+        '      stift.font = "18px sans-serif"',
+        '      stift.fillText("Klicke die guten Dinge an! Klicke ins Spiel zum Start.", B / 2, H / 2)',
+        '    } else {',
+        '      stift.font = "22px sans-serif"',
+        '      stift.fillText("Deine Punkte: " + punkte, B / 2, H / 2)',
+        '      stift.font = "18px sans-serif"',
+        '      stift.fillText("Beste Runde: " + beste + " · Nochmal? Einfach klicken!", B / 2, H / 2 + 30)',
+        '    }',
+        '  }',
+        '',
+        '  requestAnimationFrame(malen)',
+        '}',
+        'malen()'
+      ].join('\n');
 
-      function standardWerte(typ) {
-        var w = {};
-        KATALOG[typ].felder.forEach(function (f) { w[f.name] = f.wert; });
-        return w;
-      }
+      var MOTOREN = { fangen: ENGINE_FANGEN, ausweichen: ENGINE_AUSWEICHEN, reaktion: ENGINE_REAKTION };
 
-      var bloecke;
-      try {
-        bloecke = JSON.parse(window.localStorage.getItem(SPEICHER_BLOECKE));
-      } catch (e) { bloecke = null; }
-      if (!Array.isArray(bloecke) || !bloecke.length || bloecke.some(function (b) { return !KATALOG[b.typ]; })) {
-        bloecke = JSON.parse(JSON.stringify(STANDARD));
-      }
+      function machSlot(nr) {
+        function el(kurz) { return document.getElementById('sgw-' + kurz + '-' + nr); }
+        var editor = el('editor');
+        var vorschau = el('vorschau');
+        var statusEl = el('status');
+        var besteEl = el('beste');
+        var blocksBox = el('blocks');
+        var katalogBox = el('katalog');
+        var codebereich = el('codebereich');
+        var codeKnopf = el('codeansehen');
+        var SCHLUESSEL = 'spieleWerkstatt' + nr;
 
-      function baueKonfigAus(liste) {
-        var objekte = liste.filter(function (b) { return b.typ === 'objekt'; });
-        if (!objekte.length) return null;
-        function wert(typ, name, ersatz) {
-          var b = null;
-          for (var i = 0; i < liste.length; i++) { if (liste[i].typ === typ) { b = liste[i]; break; } }
-          return b ? b.werte[name] : ersatz;
+        var modus = 'fangen';
+        var bloecke;
+        try {
+          bloecke = JSON.parse(window.localStorage.getItem(SCHLUESSEL + 'Bloecke'));
+        } catch (e) { bloecke = null; }
+        if (!Array.isArray(bloecke) || !bloecke.length || bloecke.some(function (b) { return !KATALOG[b.typ]; })) {
+          bloecke = JSON.parse(JSON.stringify(STANDARD));
         }
-        return {
-          name: wert('name', 'text', 'Mein Spiel'),
-          hintergrund: wert('hintergrund', 'farbe', '#0f172a'),
-          faenger: {
-            emoji: wert('faenger', 'emoji', '🧺'),
-            farbe: wert('faenger', 'farbe', '#0f766e'),
-            breite: Number(wert('faenger', 'breite', 80)) || 80,
-            steuerung: wert('faenger', 'steuerung', 'beides')
-          },
-          objekte: objekte.map(function (o) {
-            return {
-              emoji: o.werte.emoji,
-              punkte: Number(o.werte.punkte) || 1,
-              tempo: Number(o.werte.tempo) || 3,
-              schneller: !!o.werte.schneller,
-              gefahr: !!o.werte.gefahr
-            };
-          }),
-          leben: Number(wert('regeln', 'leben', 3)) || 3
-        };
-      }
+        var hatSpielart = bloecke.some(function (b) { return b.typ === 'spielart'; });
+        if (!hatSpielart) {
+          bloecke.unshift({ typ: 'spielart', werte: { art: 'fangen' } });
+        }
 
-      function baueCodeAus(liste) {
-        var k = baueKonfigAus(liste);
-        if (!k) return null;
-        return '// ===== Dein Spiel, gebaut aus Bausteinen =====\n'
-          + '// Alles, was du hier oben siehst, hast du mit Bausteinen eingestellt.\n'
-          + 'var KONFIG = ' + JSON.stringify(k, null, 2) + ';\n\n' + ENGINE;
-      }
+        function bestimmeModus() {
+          for (var i = 0; i < bloecke.length; i++) {
+            if (bloecke[i].typ === 'spielart') { modus = bloecke[i].werte.art || 'fangen'; return; }
+          }
+          modus = 'fangen';
+        }
 
-      var ORIGINAL_CODE = baueCodeAus(JSON.parse(JSON.stringify(STANDARD)));
+        function setzeStatus(text) {
+          statusEl.textContent = text;
+          if (setzeStatus._timer) window.clearTimeout(setzeStatus._timer);
+          setzeStatus._timer = window.setTimeout(function () { statusEl.textContent = ''; }, 3500);
+        }
 
-      function baueVorschauAus(code) {
-        vorschau.srcdoc = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">'
-          + '<style>html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;background:#0f172a}'
-          + 'canvas{border-radius:14px;max-width:100%;touch-action:none}</style>'
-          + '</head><body><canvas id="spiel" width="480" height="360"></canvas>'
-          + '<script>' + code + '<\/script></body></html>';
-      }
+        function baueCode() {
+          var k = baueKonfigAus(bloecke, modus);
+          if (!k) return null;
+          return '// ===== Spiel ' + nr + ', gebaut aus Bausteinen =====\n'
+            + '// Alles, was du hier oben siehst, hast du mit Bausteinen eingestellt.\n'
+            + 'var KONFIG = ' + JSON.stringify(k, null, 2) + ';\n\n' + MOTOREN[modus];
+        }
 
-      function zeichneBloecke() {
-        blocksBox.innerHTML = '';
-        bloecke.forEach(function (b, index) {
-          var k = KATALOG[b.typ];
-          var karte = document.createElement('div');
-          karte.className = 'sgw-block sgw-block--' + b.typ;
+        function baueVorschauAus(code) {
+          vorschau.srcdoc = '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">'
+            + '<style>html,body{margin:0;height:100%;display:flex;align-items:center;justify-content:center;background:#0f172a}'
+            + 'canvas{border-radius:14px;max-width:100%;touch-action:none}</style>'
+            + '</head><body><canvas id="spiel" width="480" height="360"></canvas>'
+            + '<script>' + code + '<\/script></body></html>';
+        }
 
-          var kopf = document.createElement('div');
-          kopf.className = 'sgw-block-kopf';
-          var titel = document.createElement('span');
-          titel.textContent = k.titel;
-          var loeschen = document.createElement('button');
-          loeschen.type = 'button';
-          loeschen.className = 'sgw-block-loeschen';
-          loeschen.textContent = '✕';
-          loeschen.setAttribute('aria-label', 'Baustein ' + k.titel + ' entfernen');
-          loeschen.addEventListener('click', function () {
-            bloecke.splice(index, 1);
-            zeichneBloecke();
-            setzeStatus('Baustein entfernt.');
-          });
-          kopf.appendChild(titel);
-          kopf.appendChild(loeschen);
-          karte.appendChild(kopf);
-
-          k.felder.forEach(function (f) {
-            var zeile = document.createElement('label');
-            zeile.className = 'sgw-feld';
-            var beschriftung = document.createElement('span');
-            beschriftung.textContent = f.label;
-            var eingabe;
-
-            if (f.art === 'wahl') {
-              eingabe = document.createElement('select');
-              f.optionen.forEach(function (opt) {
-                var o = document.createElement('option');
-                var wert = Array.isArray(opt) ? opt[0] : opt;
-                var text = Array.isArray(opt) ? opt[1] : opt;
-                o.value = wert;
-                o.textContent = text;
-                if (String(b.werte[f.name]) === String(wert)) o.selected = true;
-                eingabe.appendChild(o);
-              });
-              eingabe.addEventListener('change', function () { b.werte[f.name] = eingabe.value; });
-            } else if (f.art === 'farbe') {
-              eingabe = document.createElement('input');
-              eingabe.type = 'color';
-              eingabe.value = b.werte[f.name] || f.wert;
-              eingabe.addEventListener('input', function () { b.werte[f.name] = eingabe.value; });
-            } else if (f.art === 'zahl') {
-              eingabe = document.createElement('input');
-              eingabe.type = 'number';
-              eingabe.min = f.min;
-              eingabe.max = f.max;
-              eingabe.value = b.werte[f.name];
-              eingabe.addEventListener('change', function () {
-                var v = Number(eingabe.value);
-                if (isNaN(v)) v = f.wert;
-                if (v < f.min) v = f.min;
-                if (v > f.max) v = f.max;
-                eingabe.value = v;
-                b.werte[f.name] = v;
-              });
-            } else if (f.art === 'schalter') {
-              eingabe = document.createElement('input');
-              eingabe.type = 'checkbox';
-              eingabe.checked = !!b.werte[f.name];
-              zeile.insertBefore(eingabe, beschriftung);
-              eingabe.addEventListener('change', function () { b.werte[f.name] = eingabe.checked; });
-            } else {
-              eingabe = document.createElement('input');
-              eingabe.type = 'text';
-              eingabe.maxLength = 40;
-              eingabe.value = b.werte[f.name] || '';
-              eingabe.addEventListener('input', function () { b.werte[f.name] = eingabe.value; });
+        function sichtbareBloecke() {
+          var sichtbar = [];
+          for (var i = 0; i < bloecke.length; i++) {
+            if (KATALOG[bloecke[i].typ].modi.indexOf(modus) !== -1) {
+              sichtbar.push({ block: bloecke[i], position: i });
             }
+          }
+          return sichtbar;
+        }
 
-            zeile.appendChild(beschriftung);
-            zeile.appendChild(eingabe);
-            karte.appendChild(zeile);
+        function zeichneBloecke() {
+          bestimmeModus();
+          blocksBox.innerHTML = '';
+          sichtbareBloecke().forEach(function (eintrag) {
+            var b = eintrag.block;
+            var k = KATALOG[b.typ];
+            var karte = document.createElement('div');
+            karte.className = 'sgw-block sgw-block--' + b.typ;
+
+            var kopf = document.createElement('div');
+            kopf.className = 'sgw-block-kopf';
+            var titel = document.createElement('span');
+            titel.textContent = titelFuer(k, modus);
+            var loeschen = document.createElement('button');
+            loeschen.type = 'button';
+            loeschen.className = 'sgw-block-loeschen';
+            loeschen.textContent = '✕';
+            loeschen.setAttribute('aria-label', 'Baustein entfernen');
+            loeschen.addEventListener('click', function () {
+              bloecke.splice(eintrag.position, 1);
+              zeichneBloecke();
+              setzeStatus('Baustein entfernt.');
+            });
+            kopf.appendChild(titel);
+            kopf.appendChild(loeschen);
+            karte.appendChild(kopf);
+
+            k.felder.forEach(function (f) {
+              if (f.ohne && f.ohne.indexOf(modus) !== -1) return;
+              var zeile = document.createElement('label');
+              zeile.className = 'sgw-feld';
+              var beschriftung = document.createElement('span');
+              beschriftung.textContent = labelFuer(f, modus);
+              var eingabe;
+
+              if (f.art === 'wahl') {
+                eingabe = document.createElement('select');
+                f.optionen.forEach(function (opt) {
+                  var o = document.createElement('option');
+                  var w = Array.isArray(opt) ? opt[0] : opt;
+                  var t = Array.isArray(opt) ? opt[1] : opt;
+                  o.value = w;
+                  o.textContent = t;
+                  if (String(b.werte[f.name]) === String(w)) o.selected = true;
+                  eingabe.appendChild(o);
+                });
+                eingabe.addEventListener('change', function () {
+                  b.werte[f.name] = eingabe.value;
+                  if (f.neuZeichnen) {
+                    zeichneBloecke();
+                    setzeStatus('Neue Spielart gewählt! Passe die Bausteine an und baue neu.');
+                  }
+                });
+              } else if (f.art === 'farbe') {
+                eingabe = document.createElement('input');
+                eingabe.type = 'color';
+                eingabe.value = b.werte[f.name] || f.wert;
+                eingabe.addEventListener('input', function () { b.werte[f.name] = eingabe.value; });
+              } else if (f.art === 'zahl') {
+                eingabe = document.createElement('input');
+                eingabe.type = 'number';
+                eingabe.min = f.min;
+                eingabe.max = f.max;
+                eingabe.value = b.werte[f.name];
+                eingabe.addEventListener('change', function () {
+                  var v = Number(eingabe.value);
+                  if (isNaN(v)) v = f.wert;
+                  if (v < f.min) v = f.min;
+                  if (v > f.max) v = f.max;
+                  eingabe.value = v;
+                  b.werte[f.name] = v;
+                });
+              } else if (f.art === 'schalter') {
+                eingabe = document.createElement('input');
+                eingabe.type = 'checkbox';
+                eingabe.checked = !!b.werte[f.name];
+                zeile.insertBefore(eingabe, beschriftung);
+                eingabe.addEventListener('change', function () { b.werte[f.name] = eingabe.checked; });
+              } else {
+                eingabe = document.createElement('input');
+                eingabe.type = 'text';
+                eingabe.maxLength = 40;
+                eingabe.value = b.werte[f.name] || '';
+                eingabe.addEventListener('input', function () { b.werte[f.name] = eingabe.value; });
+              }
+
+              zeile.appendChild(beschriftung);
+              zeile.appendChild(eingabe);
+              karte.appendChild(zeile);
+            });
+
+            blocksBox.appendChild(karte);
           });
+          zeichneKatalog();
+        }
 
-          blocksBox.appendChild(karte);
-        });
-        zeichneKatalog();
-      }
-
-      function zeichneKatalog() {
-        katalogBox.innerHTML = '';
-        Object.keys(KATALOG).forEach(function (typ) {
-          var k = KATALOG[typ];
-          var anzahl = bloecke.filter(function (b) { return b.typ === typ; }).length;
-          var knopf = document.createElement('button');
-          knopf.type = 'button';
-          knopf.textContent = '＋ ' + k.titel + ' (' + anzahl + '/' + k.max + ')';
-          knopf.disabled = anzahl >= k.max;
-          knopf.addEventListener('click', function () {
-            bloecke.push({ typ: typ, werte: standardWerte(typ) });
-            zeichneBloecke();
-            setzeStatus('Baustein „' + k.titel + '“ hinzugefügt! Jetzt einstellen und „▶ Spiel bauen“ klicken.');
+        function zeichneKatalog() {
+          katalogBox.innerHTML = '';
+          Object.keys(KATALOG).forEach(function (typ) {
+            var k = KATALOG[typ];
+            if (k.modi.indexOf(modus) === -1) return;
+            var anzahl = bloecke.filter(function (b) { return b.typ === typ; }).length;
+            var knopf = document.createElement('button');
+            knopf.type = 'button';
+            knopf.textContent = '＋ ' + titelFuer(k, modus) + ' (' + anzahl + '/' + k.max + ')';
+            knopf.disabled = anzahl >= k.max;
+            knopf.addEventListener('click', function () {
+              bloecke.push({ typ: typ, werte: standardWerte(typ) });
+              zeichneBloecke();
+              setzeStatus('Baustein hinzugefügt! Jetzt einstellen und „▶ Spiel bauen“ klicken.');
+            });
+            katalogBox.appendChild(knopf);
           });
-          katalogBox.appendChild(knopf);
+        }
+
+        var beste = 0;
+        try { beste = Number(window.localStorage.getItem(SCHLUESSEL + 'Beste')) || 0; } catch (e) {}
+        besteEl.textContent = '🏆 Beste Runde: ' + beste;
+
+        window.addEventListener('message', function (e) {
+          if (e.data && e.data.typ === 'punkte' && Number(e.data.punkte) > beste) {
+            beste = Number(e.data.punkte);
+            besteEl.textContent = '🏆 Beste Runde: ' + beste;
+            try { window.localStorage.setItem(SCHLUESSEL + 'Beste', String(beste)); } catch (err) {}
+          }
         });
-      }
 
-      var beste = 0;
-      try { beste = Number(window.localStorage.getItem(SPEICHER_BESTE)) || 0; } catch (e) {}
-      besteEl.textContent = '🏆 Beste Runde: ' + beste;
-      window.addEventListener('message', function (e) {
-        if (e.data && e.data.typ === 'punkte' && Number(e.data.punkte) > beste) {
-          beste = Number(e.data.punkte);
-          besteEl.textContent = '🏆 Beste Runde: ' + beste;
-          try { window.localStorage.setItem(SPEICHER_BESTE, String(beste)); } catch (err) {}
-        }
-      });
+        el('bauen').addEventListener('click', function () {
+          var code = baueCode();
+          if (!code) {
+            setzeStatus('Du brauchst mindestens einen Baustein „Was fällt / was erscheint“!');
+            return;
+          }
+          editor.value = code;
+          baueVorschauAus(code);
+          setzeStatus('Spiel gebaut! 🎉 Klicke einmal ins Spiel, um zu starten.');
+        });
 
-      var tabBausteine = document.getElementById('tab-bausteine');
-      var tabCode = document.getElementById('tab-code');
-      var tabKnopfBausteine = document.getElementById('tab-knopf-bausteine');
-      var tabKnopfCode = document.getElementById('tab-knopf-code');
-      function zeigeTab(welcher) {
-        var bausteineAktiv = welcher === 'bausteine';
-        tabBausteine.hidden = !bausteineAktiv;
-        tabCode.hidden = bausteineAktiv;
-        tabKnopfBausteine.classList.toggle('is-aktiv', bausteineAktiv);
-        tabKnopfCode.classList.toggle('is-aktiv', !bausteineAktiv);
-        tabKnopfBausteine.setAttribute('aria-selected', String(bausteineAktiv));
-        tabKnopfCode.setAttribute('aria-selected', String(!bausteineAktiv));
-      }
-      tabKnopfBausteine.addEventListener('click', function () { zeigeTab('bausteine'); });
-      tabKnopfCode.addEventListener('click', function () { zeigeTab('code'); });
+        el('speichern').addEventListener('click', function () {
+          try {
+            window.localStorage.setItem(SCHLUESSEL + 'Bloecke', JSON.stringify(bloecke));
+            setzeStatus('Bausteine gespeichert! ✅');
+          } catch (e) {
+            setzeStatus('Speichern hat nicht geklappt – du kannst aber weiter bauen!');
+          }
+        });
 
-      document.getElementById('sgw-bauen').addEventListener('click', function () {
-        var code = baueCodeAus(bloecke);
-        if (!code) {
-          setzeStatus('Du brauchst mindestens einen Baustein „⭐ Etwas fällt vom Himmel“!');
-          return;
-        }
-        editor.value = code;
-        baueVorschauAus(code);
-        setzeStatus('Spiel gebaut! 🎉 Klicke einmal ins Spiel, um zu starten.');
-      });
+        el('reset').addEventListener('click', function () {
+          bloecke = JSON.parse(JSON.stringify(STANDARD));
+          try { window.localStorage.removeItem(SCHLUESSEL + 'Bloecke'); } catch (e) {}
+          zeichneBloecke();
+          baueVorschauAus(baueCode());
+          setzeStatus('Zurückgesetzt. ↩');
+        });
 
-      document.getElementById('sgw-speichern').addEventListener('click', function () {
-        try {
-          window.localStorage.setItem(SPEICHER_BLOECKE, JSON.stringify(bloecke));
-          setzeStatus('Bausteine gespeichert! ✅');
-        } catch (e) {
-          setzeStatus('Speichern hat nicht geklappt – du kannst aber weiter bauen!');
-        }
-      });
+        codeKnopf.addEventListener('click', function () {
+          var offen = codebereich.hidden;
+          codebereich.hidden = !offen;
+          codeKnopf.setAttribute('aria-expanded', String(offen));
+          codeKnopf.textContent = offen ? '📝 Code verstecken' : '📝 Code ansehen';
+          if (offen && !editor.value) {
+            editor.value = baueCode() || '';
+          }
+        });
 
-      document.getElementById('sgw-reset').addEventListener('click', function () {
-        bloecke = JSON.parse(JSON.stringify(STANDARD));
-        try { window.localStorage.removeItem(SPEICHER_BLOECKE); } catch (e) {}
+        el('start').addEventListener('click', function () {
+          baueVorschauAus(editor.value);
+          setzeStatus('Code gestartet – klicke einmal ins Spiel! 🎮');
+        });
+
+        el('codespeichern').addEventListener('click', function () {
+          try {
+            window.localStorage.setItem(SCHLUESSEL + 'Code', editor.value);
+            setzeStatus('Code gespeichert! ✅');
+          } catch (e) {
+            setzeStatus('Speichern hat nicht geklappt – du kannst aber weiter spielen!');
+          }
+        });
+
+        el('codereset').addEventListener('click', function () {
+          editor.value = baueCode() || '';
+          try { window.localStorage.removeItem(SCHLUESSEL + 'Code'); } catch (e) {}
+          baueVorschauAus(editor.value);
+          setzeStatus('Baustein-Code zurückgeholt. ↩');
+        });
+
         zeichneBloecke();
-        baueVorschauAus(baueCodeAus(bloecke));
-        setzeStatus('Alles zurückgesetzt. ↩');
-      });
 
-      document.getElementById('sgw-start').addEventListener('click', function () {
-        baueVorschauAus(editor.value);
-        setzeStatus('Spiel gestartet – klicke einmal ins Spiel! 🎮');
-      });
+        var gespeicherterCode = null;
+        try { gespeicherterCode = window.localStorage.getItem(SCHLUESSEL + 'Code'); } catch (e) {}
+        var startCode = gespeicherterCode || baueCode();
+        editor.value = startCode;
+        baueVorschauAus(startCode);
+      }
 
-      document.getElementById('sgw-code-speichern').addEventListener('click', function () {
-        try {
-          window.localStorage.setItem(SPEICHER_CODE, editor.value);
-          setzeStatus('Code gespeichert! ✅');
-        } catch (e) {
-          setzeStatus('Speichern hat nicht geklappt – du kannst aber weiter spielen!');
-        }
-      });
-
-      document.getElementById('sgw-code-reset').addEventListener('click', function () {
-        editor.value = ORIGINAL_CODE;
-        try { window.localStorage.removeItem(SPEICHER_CODE); } catch (e) {}
-        baueVorschauAus(editor.value);
-        setzeStatus('Original-Code (aus den Standard-Bausteinen) zurückgeholt. ↩');
-      });
-
-      zeichneBloecke();
-
-      var gespeicherterCode = null;
-      try { gespeicherterCode = window.localStorage.getItem(SPEICHER_CODE); } catch (e) {}
-      var startCode = gespeicherterCode || baueCodeAus(bloecke);
-      editor.value = startCode;
-      baueVorschauAus(startCode);
+      machSlot(1);
+      machSlot(2);
+      machSlot(3);
     })();
   </script>
 </body>
